@@ -1,7 +1,10 @@
 import json
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
 from bson.json_util import dumps
 
+#utils
+from src.utils.JsonMesage import message_error
+from src.utils.script import scriptType
 # Models
 from src.models.LightModel import LightModel
 
@@ -14,7 +17,7 @@ def get_lights():
         lights = LightModel.get_lights()
         return dumps(lights)
     except Exception as ex:
-        return jsonify({'message': str(ex)}), 500
+        return message_error(ex)
 
 
 @main.route('/<id>', methods =['GET'])
@@ -23,7 +26,7 @@ def get_light(id):
         light = LightModel.get_light(id)
         return dumps(light)
     except Exception as ex:
-        return jsonify({'message': str(ex)}), 500
+        return message_error(ex)
 
 
 @main.route('/<id>', methods = ['POST'])
@@ -32,14 +35,16 @@ def status_light(id):
         return "error", 400
     else:
         try:
-            if request.json is not None:
+
+            if request.json is None:
+                return message_error("Json empty")
+            else:
                 try:
-                    #jsonload = json.loads(request.json)
-                    #status = str(jsonload["status"])
+                    status = request.json["status"]
 
-                    status = request.json.get("status", 'Vacio')
+                    temp, status = scriptType.validate(status)
 
-                    if (status == "True") or (status == "False"):
+                    if temp:
                         LightModel.post_light(id, status)
                         print("Validate")
                         return "Validate", 200  # Return "Validate" with a 200 OK status
@@ -47,7 +52,14 @@ def status_light(id):
                         print("Invalid Status")
                         return "Invalid status", 400  # Return an error message with a 400 Bad Request status
                 except Exception as ex:
-                    return jsonify({'message': str(ex)}), 500
+                    return message_error(ex)
 
         except Exception as ex:
-            return jsonify({'message': str(ex)}), 500
+            return message_error(ex)
+
+@main.route('/add',methods=['POST'])
+def add_light():
+    try:
+        add_light
+    except Exception as ex:
+        return message_error(ex)

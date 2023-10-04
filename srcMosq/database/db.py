@@ -14,5 +14,5 @@ def get_connection(collection_db):
             config('MONGO_HOST'),
             int(config('MONGO_PORT'))
         )[config('MONGO_DATABASE')][collection_db]
-    except ConnectionFailure as ex:
-        raise ex
+    except ConnectionFailure:
+        return "ConectionFail"

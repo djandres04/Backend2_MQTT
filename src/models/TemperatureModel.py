@@ -1,30 +1,20 @@
 from src.database.db import get_connection
 
-#Mosquitto
-from src.mosquitto.src.temperature import TemperatureMosquitto
-
 from .entities.Temperature import Temperature
 
 topic = "temp"
 
-class TemperatureModel():
 
+class TemperatureModel:
     def get_temp():
         try:
-            clientDb = get_connection("Devices").find({'topic':topic})
-            return clientDb
+            client_db = get_connection("Temperature").find()
+            return client_db
         except Exception as ex:
             raise ex
 
-    def post_tempe(message,person =None):
+    def add_tempe(message):
         try:
-            clientDb = get_connection("Devices").find_one({'topic':'temp'})
-            historialDB = get_connection("History")
-            tempera = TemperatureMosquitto.post_status(message)
-            tempe = Temperature(clientDb["id"], clientDb["ubication"],tempera,person)
-
-            historialDB.insert_one(tempe.to_JSON_person())
-
-            return tempera
+            get_connection("Temperature").insert_one(Temperature(message).to_JSON())
         except Exception as ex:
             raise ex

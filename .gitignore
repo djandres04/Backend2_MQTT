@@ -120,6 +120,15 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+
+srcMosq/.env
+srcMosq/.venv
+srcMosq/env/
+srcMosq/venv/
+srcMosq/ENV/
+srcMosq/env.bak/
+srcMosq/venv.bak/
+
 .env
 .venv
 env/
@@ -161,3 +170,5 @@ cython_debug/
 
 .idea/
 .vscode/
+
+.gitignore
