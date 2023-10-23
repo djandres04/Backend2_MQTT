@@ -12,12 +12,16 @@ class scriptType:
             'Verdad': 'True',
             'verdad': 'True',
             '1': 'True',
+            'on':'True',
+            'ON':'True',
 
             'False': 'False',
             'false': 'False',
             'falso': 'False',
             'Falso': 'False',
             '0': 'False',
+            'off':'False',
+            '0FF':'False',
 
             "True": "True",
             "true": "True",

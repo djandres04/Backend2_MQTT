@@ -1,61 +1,115 @@
 from flask import Blueprint, request
 from bson.json_util import dumps
+from flask_cors import CORS
 
+from src.models.entities.Door import door
 # utils
-from src.utils.JsonMesage import message_error
+from src.utils import JsonMesage
 from src.utils.script import scriptType
 
 # Models
-from src.models.DoorModel import DoorModel
+from src.models import DoorModel
 
 main = Blueprint('door_blueprint', __name__)
+CORS(main, origins='*')
 
 
-@main.route('/')
+@main.route('/', methods=['GET'], strict_slashes=False)
 def get_doors():
     try:
-        buzzers = DoorModel.get_doors()
+        id_person = request.headers.get('Client')
+        buzzers = DoorModel.get_doors(id_person)
         return dumps(buzzers)
     except Exception as ex:
-        return message_error(ex)
+        return JsonMesage.message_error(ex)
 
 
-@main.route('/<id>')
+@main.route('/<id>', methods=['GET'])
 def get_door(id):
     try:
-        door = DoorModel.get_door(id)
-        return dumps(door)
+        id_person = request.headers.get('Client')
+        if DoorModel.door_exist(id_person, id):
+            temp = DoorModel.get_door(id_person, id)
+            return dumps(temp)
+        else:
+            return JsonMesage.message("Door dont exist")
     except Exception as ex:
-        return message_error(ex)
+        return JsonMesage.message_error(ex)
 
 
 @main.route('/<id>', methods=['POST'])
 def status_door(id):
-    if int(id) != 1:
-        return "error", 400
-    else:
-        try:
-            if request.json is not None:
-                try:
-                    # jsonLoad = json.loads(request.json)
-                    # status = str(jsonLoad["status"])
-
-                    # status = json_validate(request.get_json("status"), json.loads(request.json)["status"])
-
-                    status = request.json.get("status", 'Vacio')
-
+    try:
+        if request.json is None:
+            return JsonMesage.message_error("Json empty")
+        else:
+            try:
+                status = request.json["status"]
+                id_person = request.headers.get('Client')
+                if DoorModel.door_exist(id_person, id):
                     temp, status = scriptType.validate(status)
-
                     if temp:
-                        DoorModel.post_door(id, status)
+                        DoorModel.post_door(id_person, id, status)
                         print("Validate")
-                        return "Validate", 200  # Return "Validate" with a 200 OK status
+                        return JsonMesage.message("Validate")  # Return "Validate" with a 200 OK status
                     else:
                         print("Invalid Status")
-                        return "Invalid status", 400  # Return an error message with a 400 Bad Request status
+                        return JsonMesage.message(
+                            "Invalid status")  # Return an error message with a 400 Bad Request status
+                else:
+                    return JsonMesage.message("Door dont exist")
+            except Exception as ex:
+                return JsonMesage.message_error(ex)
+    except Exception as ex:
+        return JsonMesage.message_error(ex)
 
-                except Exception as ex:
-                    message_error(ex)
 
-        except Exception as ex:
-            message_error(ex)
+@main.route('/add', methods=['POST'])
+def add_door():
+    try:
+        if request.json is None:
+            return JsonMesage.message_error("Json empty")
+        else:
+            try:
+                id = request.json['id']
+                ubication = request.json['ubication']
+                status = 'False'
+                database = request.json['database_id']
+                id_person = request.headers.get('Client')
+
+                temp = DoorModel.add_door(database, id_person, door(id, ubication, status, id_person))
+
+                if temp:
+                    return JsonMesage.message('Door created')
+                else:
+                    return JsonMesage.message('Door exist')
+
+            except Exception as ex:
+                return JsonMesage.message_error(ex)
+
+    except Exception as ex:
+        return JsonMesage.message_error(ex)
+
+
+@main.route('/', methods=['DELETE'])
+def delete_light():
+    try:
+        if request.json is None:
+            return JsonMesage.message_error("Json empty")
+        else:
+            try:
+                id = request.json['id']
+                database = request.json['database_id']
+                id_person = request.headers.get('Client')
+
+                temp = DoorModel.delete_light(database, id, id_person)
+
+                if temp:
+                    return JsonMesage.message('Door successfully delete')
+                else:
+                    return JsonMesage.message('Door dont exist')
+
+            except Exception as ex:
+                return JsonMesage.message_error(ex)
+    except Exception as ex:
+        return JsonMesage.message_error(ex)

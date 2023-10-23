@@ -5,7 +5,7 @@ import datetime
 topic = "door"
 
 
-class Door:
+class door:
     def __init__(self, id, ubication, status, person) -> None:
         self.id = id,
         self.ubication = ubication

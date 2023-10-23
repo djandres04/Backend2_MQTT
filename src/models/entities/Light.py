@@ -5,7 +5,7 @@ import datetime
 topic = "light"
 
 
-class Light:
+class light:
     def __init__(self, id, ubication=None, status=None, person=None) -> None:
         self.id = id,
         self.ubication = ubication

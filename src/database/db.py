@@ -8,11 +8,11 @@ from decouple import config
 
 
 # Connection to a database and a specific collection within it
-def get_connection(collection_db):
+def get_connection(database_db, collection_db):
     try:
         return MongoClient(
             config('MONGO_HOST'),
             int(config('MONGO_PORT'))
-        )[config('MONGO_DATABASE')][collection_db]
+        )[database_db][collection_db]
     except ConnectionFailure as ex:
         raise ex
