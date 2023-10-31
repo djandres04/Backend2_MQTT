@@ -9,9 +9,9 @@ from ..utils import ConverterTime
 topic = "door"
 
 
-def get_doors(id_person):
+def get_doors(database_id):
     try:
-        client_db = get_connection(id_person, "Devices").find_one({"topic": topic})
+        client_db = get_connection(database_id, "Devices").find({"topic": topic})
         return client_db
     except Exception as ex:
         raise ex
@@ -25,12 +25,12 @@ def get_door(database_id, id_device):
         raise ex
 
 
-def post_door(database_id, id_person, id_device, status_request, person=None):
+def post_door(database_id, id_device, status_request, person=None):
     try:
         # Obtain a connection to two collections: one for devices and the other for the historical
         # changes of device status
-        client_db = get_connection(database_id, id_person, "Devices")
-        historical_db = get_connection(database_id, id_person, "History")
+        client_db = get_connection(database_id,  "Devices")
+        historical_db = get_connection(database_id, "History")
 
         # The variable 'temp' is responsible for searching documents to be changed in the database
         temp = {'topic': topic, "id": id_device}
@@ -58,14 +58,14 @@ def add_door(database_id, id_user, door_temp):
     try:
         client_db = get_connection(database_id, "Devices")
         historical_db = get_connection(database_id, "History")
-        temp_search = client_db.find_one({"id": door_temp.id})
+        temp_search = client_db.find_one({"id": door_temp.id, "topic": topic})
         if temp_search:
             return False
         else:
-            light_object = door_temp.to_JSON()
-            temp = {"object": light_object, "created_date": ConverterTime.time_now(), "create_person": id_user}
+            door_object = door_temp.to_JSON()
+            temp = {"object": door_object, "created_date": ConverterTime.time_now(), "create_person": id_user}
             historical_db.insert_one(temp)
-            client_db.insert_one(light_object)
+            client_db.insert_one(door_object)
             return True
 
     except Exception as ex:
@@ -73,11 +73,11 @@ def add_door(database_id, id_user, door_temp):
         raise ex
 
 
-def delete_light(database_id, door_id, id_user):
+def delete_door(database_id, door_id, id_user):
     try:
         client_db = get_connection(database_id, "Devices")
         historical_db = get_connection(database_id, "History")
-        temp_search = client_db.find_one({"id": door_id})
+        temp_search = client_db.find_one({"id": door_id, "topic":topic})
         if temp_search:
             temp = {"object": temp_search, "delete_date": ConverterTime.time_now(), "delete_person": id_user}
             historical_db.insert_one(temp)

@@ -38,7 +38,7 @@ class scriptType:
             "0": "False"
             }
         try:
-            temp = scripting[message]
-            return True, temp
+            mensaje_temp = scripting[message]
+            return True, mensaje_temp
         except Exception as ex:
             return False, None

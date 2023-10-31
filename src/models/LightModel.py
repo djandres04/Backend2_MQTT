@@ -26,7 +26,7 @@ def get_light(database_id, id_device):
         raise ex
 
 
-def status_light(database_id, id_device, status_request, person=None):
+def post_light(database_id, id_device, status_request, person=None):
     try:
         # Obtain a connection to two collections: one for devices and the other for the historical
         # changes of device status
@@ -48,7 +48,7 @@ def status_light(database_id, id_device, status_request, person=None):
         historical_db.insert_one(light_temp.to_JSON())
 
         # Lastly, we publish a message to its corresponding topic in order to instruct the device to change its status
-        # publish_message(status_request, topic + "/" + id_device)
+        #publish_message(status_request, topic + "/" + id_device)
 
     except Exception as ex:
         raise ex
@@ -58,7 +58,7 @@ def add_light(database_id, light_temp, id_user):
     try:
         client_db = get_connection(database_id, "Devices")
         historical_db = get_connection(database_id, "History")
-        temp_search = client_db.find_one({"id": light_temp.id})
+        temp_search = client_db.find_one({"id": light_temp.id, "topic": topic})
         if temp_search:
             return False
         else:
@@ -77,10 +77,14 @@ def delete_light(database_id, light_id, id_user):
     try:
         client_db = get_connection(database_id, "Devices")
         historical_db = get_connection(database_id, "History")
-        temp_search = client_db.find_one({"id": light_id})
+
+        temp_search = client_db.find_one({"id": light_id, "topic":topic})
+
         if temp_search:
+
             temp = {"object": temp_search, "delete_date": ConverterTime.time_now(), "delete_person": id_user}
             historical_db.insert_one(temp)
+
             client_db.delete_one({"id": light_id})
             return True
         else:

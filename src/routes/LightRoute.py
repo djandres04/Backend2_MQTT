@@ -13,12 +13,14 @@ from src.models.entities.Light import light
 main = Blueprint('light_blueprint', __name__)
 CORS(main, origins='*')
 
+database = 'smartHome'
+
 
 @main.route('/', methods=['GET'], strict_slashes=False)
 def get_lights():
     try:
-        id_person = request.headers.get('Client')
-        temp = LightModel.get_lights(id_person)
+        # database = request.json['database_id']
+        temp = LightModel.get_lights(database)
         return dumps(temp)
     except Exception as ex:
         return JsonMesage.message_error(ex)
@@ -27,9 +29,9 @@ def get_lights():
 @main.route('/<id>', methods=['GET'])
 def get_light(id):
     try:
-        id_person = request.headers.get('Client')
-        if LightModel.light_exist(id_person, id):
-            temp = LightModel.get_light(id_person, id)
+        # database = request.json['database_id']
+        if LightModel.light_exist(database, id):
+            temp = LightModel.get_light(database, id)
             return dumps(temp)
         else:
             return JsonMesage.message("Light dont exist")
@@ -41,20 +43,23 @@ def get_light(id):
 def status_light(id):
     try:
         if request.json is None:
-            return JsonMesage.message_error("Json empty")
+            return JsonMesage.message("Json empty")
         else:
             try:
                 status = request.json["status"]
                 id_person = request.headers.get('Client')
-                if LightModel.light_exist(id_person, id):
+                # database = request.json['database_id']
+
+                if LightModel.light_exist(database, id):
                     temp, status = scriptType.validate(status)
                     if temp:
-                        LightModel.status_light(id_person, id, status)
+                        LightModel.post_light(database, id, status)
                         print("Validate")
                         return JsonMesage.message("Validate")  # Return "Validate" with a 200 OK status
                     else:
                         print("Invalid Status")
-                        return JsonMesage.message("Invalid status")  # Return an error message with a 400 Bad Request status
+                        return JsonMesage.message(
+                            "Invalid status")  # Return an error message with a 400 Bad Request status
                 else:
                     return JsonMesage.message("Light dont exist")
             except Exception as ex:
@@ -67,13 +72,13 @@ def status_light(id):
 def add_light():
     try:
         if request.json is None:
-            return JsonMesage.message_error("Json empty")
+            return JsonMesage.message("Json empty")
         else:
             try:
                 id = request.json['id']
                 ubication = request.json['ubication']
                 status = 'False'
-                database = request.json['database_id']
+                # database = request.json['database_id']
                 id_person = request.headers.get('Client')
 
                 temp = LightModel.add_light(database, light(id, ubication, status, id_person), id_person)
@@ -94,11 +99,11 @@ def add_light():
 def delete_light():
     try:
         if request.json is None:
-            return JsonMesage.message_error("Json empty")
+            return JsonMesage.message("Json empty")
         else:
             try:
                 id = request.json['id']
-                database = request.json['database_id']
+                # database = request.json['database_id']
                 id_person = request.headers.get('Client')
 
                 temp = LightModel.delete_light(database, id, id_person)
@@ -111,6 +116,31 @@ def delete_light():
             except Exception as ex:
                 return JsonMesage.message_error(ex)
 
+    except Exception as ex:
+        return JsonMesage.message_error(ex)
 
+
+
+#Construccion :3, UwU, n.n
+@main.route('/', methods=['PUT'])
+def edit_light():
+    try:
+        if request.json is None:
+            return JsonMesage.message("Json empty")
+        else:
+            try:
+                id = request.json['id']
+                # database = request.json['database_id']
+                id_person = request.headers.get('Client')
+
+                temp = LightModel.delete_light(database, id, id_person)
+
+                if temp:
+                    return JsonMesage.message('Light sucesfully delete')
+                else:
+                    return JsonMesage.message('Light dont exist')
+
+            except Exception as ex:
+                return JsonMesage.message_error(ex)
     except Exception as ex:
         return JsonMesage.message_error(ex)

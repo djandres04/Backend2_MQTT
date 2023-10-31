@@ -6,9 +6,11 @@ from src.utils.JsonMesage import message_error
 from src.models import LightModel
 from src.models import DoorModel
 from src.models.BuzzerModel import BuzzerModel
-from src.models.TemperatureModel import TemperatureModel
+from src.models import TemperatureModel
 
 main = Blueprint('mqtt_blueprint', __name__)
+
+database = "smartHome"
 
 
 @main.route('/', methods=['POST'])
@@ -20,7 +22,7 @@ def mqtt_subscriber():
             if topic == 'light':
                 temp, status = scriptType.validate(request.json["status"])
                 if temp:
-                    LightModel.post_light(request.json["id"], status)
+                    LightModel.post_light(database, request.json["id"], status)
                     return "Validate", 200  # Return "Validate" with a 200 OK status
                 else:
                     return message_error("Error")
@@ -28,7 +30,7 @@ def mqtt_subscriber():
             if topic == 'door':
                 temp, status = scriptType.validate(request.json["status"])
                 if temp:
-                    DoorModel.post_door(request.json["id"], status)
+                    DoorModel.post_door(database,request.json["id"], status)
                     return "Validate", 200  # Return "Validate" with a 200 OK status
                 else:
                     return message_error("Error")

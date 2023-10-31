@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from bson.json_util import dumps
 
 # Models
-from src.models.TemperatureModel import TemperatureModel
+from src.models import TemperatureModel
 
 main = Blueprint('temperature_blueprint', __name__)
 
