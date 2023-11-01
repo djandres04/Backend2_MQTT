@@ -2,14 +2,15 @@ import json
 from flask import Blueprint, jsonify, request
 from bson.json_util import dumps
 
-#utils
+# utils
 from src.utils.JsonValidate import json_validate
 # Models
 from src.models.BuzzerModel import BuzzerModel
 
 main = Blueprint('buzzer_blueprint', __name__)
 
-@main.route('/')
+
+@main.route('/', methods=['POST'])
 def get_buzzers():
     try:
         buzzers = BuzzerModel.get_buzzers()
@@ -18,7 +19,7 @@ def get_buzzers():
         return jsonify({'message': str(ex)}), 500
 
 
-@main.route('/<id>')
+@main.route('/<id>', methods=['POST'])
 def get_buzzer(id):
     try:
         buzzer = BuzzerModel.get_buzzer(id)
@@ -35,11 +36,11 @@ def status_buzzer(id):
         try:
             if request.json is not None:
                 try:
-                    #jsonload = json.loads(request.json)
-                    #status = str(jsonload["status"])
-                    status = json_validate(request.get_json("status"),str(json.loads(request.json)["status"]) )
+                    # jsonload = json.loads(request.json)
+                    # status = str(jsonload["status"])
+                    status = json_validate(request.get_json("status"), str(json.loads(request.json)["status"]))
 
-                   #status = request.json.get("status", 'Vacio')
+                    # status = request.json.get("status", 'Vacio')
 
                     if (status == "True") or (status == "False"):
                         BuzzerModel.post_buzzer(id, status)

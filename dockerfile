@@ -8,9 +8,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y git
 
 # Clonar el repositorio de GitHub
-RUN git clone https://github.com/djandres04/Backend1.git
+RUN git clone https://github.com/djandres04/Backend2_MQTT.git
 
-WORKDIR /app/Backend1
+WORKDIR /app/Backend2_MQTT
 
 RUN git pull
 

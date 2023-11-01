@@ -121,14 +121,6 @@ celerybeat.pid
 
 # Environments
 
-srcMosq/.env
-srcMosq/.venv
-srcMosq/env/
-srcMosq/venv/
-srcMosq/ENV/
-srcMosq/env.bak/
-srcMosq/venv.bak/
-
 .env
 .venv
 env/

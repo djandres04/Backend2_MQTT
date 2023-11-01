@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify
 
-#config
+# config
 from config import config
 
-
-#Routes
+# Routes
 from routes import BuzzerRoute
 from routes import DoorRoute
 from routes import LightRoute
@@ -34,4 +33,4 @@ if __name__ == '__main__':
     app.register_blueprint(DoorRoute.main, url_prefix='/door')
     app.register_blueprint(LightRoute.main, url_prefix='/light')
 
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=5000, debug=True)
