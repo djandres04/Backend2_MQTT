@@ -3,12 +3,12 @@ from flask import Blueprint, request
 from bson.json_util import dumps
 from flask_cors import CORS
 # utils
-from ..utils import JsonMesage
-from ..utils.script import scriptType
+from utils import JsonMesage
+from utils.script import scriptType
 # Models
-from ..models import LightModel
+from models import LightModel
 
-from ..models.entities.Light import light
+from models.entities.Light import light
 
 main = Blueprint('light_blueprint', __name__)
 CORS(main, origins='*')

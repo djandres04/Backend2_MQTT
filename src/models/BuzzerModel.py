@@ -1,9 +1,9 @@
-from ..database.db import get_connection
+from database.db import get_connection
 
 # Mosquitto
-from ..utils.MosquittoMessage import publish_message
+from utils.MosquittoMessage import publish_message
 
-from entities.Buzzer import Buzzer
+from models.entities.Buzzer import Buzzer
 
 topic = "alarm"
 

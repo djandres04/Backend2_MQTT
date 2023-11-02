@@ -1,11 +1,11 @@
-from ..database.db import get_connection
+from database.db import get_connection
 
 # Mosquitto
-from ..utils.MosquittoMessage import publish_message
+from utils.MosquittoMessage import publish_message
 
-from ..models.entities.Light import light
+from models.entities.Light import light
 
-from ..utils import ConverterTime
+from utils import ConverterTime
 
 topic = "light"
 

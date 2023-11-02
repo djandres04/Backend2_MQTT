@@ -2,13 +2,13 @@ from flask import Blueprint, request
 from bson.json_util import dumps
 from flask_cors import CORS
 
-from ..models.entities.Door import door
+from models.entities.Door import door
 # utils
-from ..utils import JsonMesage
-from ..utils.script import scriptType
+from utils import JsonMesage
+from utils.script import scriptType
 
 # Models
-from ..models import DoorModel
+from models import DoorModel
 
 main = Blueprint('door_blueprint', __name__)
 CORS(main, origins='*')

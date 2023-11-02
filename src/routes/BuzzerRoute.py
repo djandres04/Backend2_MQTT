@@ -2,10 +2,11 @@ import json
 from flask import Blueprint, jsonify, request
 from bson.json_util import dumps
 
-# utils
-from ..utils.JsonValidate import json_validate
 # Models
-from ..models.BuzzerModel import BuzzerModel
+from models.BuzzerModel import BuzzerModel
+# utils
+from utils.JsonValidate import json_validate
+
 
 main = Blueprint('buzzer_blueprint', __name__)
 

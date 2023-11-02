@@ -1,6 +1,6 @@
-from ..database.db import get_connection
+from database.db import get_connection
 
-from .entities.Temperature import Temperature
+from models.entities.Temperature import Temperature
 
 topic = "temperature"
 

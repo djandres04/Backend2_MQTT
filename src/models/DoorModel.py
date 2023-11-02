@@ -1,10 +1,10 @@
-from ..database.db import get_connection
+from database.db import get_connection
 
 # Mosquitto
-from ..utils.MosquittoMessage import publish_message
+from utils.MosquittoMessage import publish_message
 
-from .entities.Door import door
-from ..utils import ConverterTime
+from models.entities.Door import door
+from utils import ConverterTime
 
 topic = "door"
 
