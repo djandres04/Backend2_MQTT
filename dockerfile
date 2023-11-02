@@ -20,5 +20,6 @@ RUN pip install -r requirements.txt
 # Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
+EXPOSE 5000
 # Especificar el comando para ejecutar tu aplicación
-CMD ["python", "app.py"]
+CMD ["python", "Backend2_MQTT/src/app.py"]

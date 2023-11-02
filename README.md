@@ -34,4 +34,8 @@ Por favor, reemplaza `your_...` con tus valores reales.
 Para instalar las dependencias necesarias para este proyecto, puedes usar pip:
 
 ```bash
+<<<<<<< HEAD
 pip install -r requirements.txt
+=======
+pip install -r requirements.txt
+>>>>>>> 0a2d0486b80e68fa8a6f8309243f3588533398b5
