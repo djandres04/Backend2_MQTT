@@ -1,11 +1,11 @@
-from src.database.db import get_connection
+from ..database.db import get_connection
 
 # Mosquitto
-from src.utils.MosquittoMessage import publish_message
+from ..utils.MosquittoMessage import publish_message
 
-from src.models.entities.Light import light
+from ..models.entities.Light import light
 
-from src.utils import ConverterTime
+from ..utils import ConverterTime
 
 topic = "light"
 
@@ -48,7 +48,7 @@ def post_light(database_id, id_device, status_request, person=None):
         historical_db.insert_one(light_temp.to_JSON())
 
         # Lastly, we publish a message to its corresponding topic in order to instruct the device to change its status
-        #publish_message(status_request, topic + "/" + id_device)
+        publish_message(status_request, topic + "/" + id_device)
 
     except Exception as ex:
         raise ex

@@ -3,9 +3,9 @@ from flask import Blueprint, jsonify, request
 from bson.json_util import dumps
 
 # utils
-from src.utils.JsonValidate import json_validate
+from ..utils.JsonValidate import json_validate
 # Models
-from src.models.BuzzerModel import BuzzerModel
+from ..models.BuzzerModel import BuzzerModel
 
 main = Blueprint('buzzer_blueprint', __name__)
 

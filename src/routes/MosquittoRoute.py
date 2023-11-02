@@ -1,12 +1,12 @@
 from flask import Blueprint, request
 
-from src.utils.script import scriptType
-from src.utils.JsonMesage import message_error
+from ..utils.script import scriptType
+from ..utils.JsonMesage import message_error
 
-from src.models import LightModel
-from src.models import DoorModel
-from src.models.BuzzerModel import BuzzerModel
-from src.models import TemperatureModel
+from ..models import LightModel
+from ..models import DoorModel
+from ..models.BuzzerModel import BuzzerModel
+from ..models import TemperatureModel
 
 main = Blueprint('mqtt_blueprint', __name__)
 
