@@ -5,7 +5,7 @@ import datetime
 topic = "buzzer"
 
 
-class Buzzer:
+class alarm:
     def __init__(self, id, ubication, waiting, person) -> None:
         self.id = id
         self.ubication = ubication

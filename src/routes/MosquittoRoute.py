@@ -5,7 +5,7 @@ from utils.JsonMesage import message_error
 
 from models import LightModel
 from models import DoorModel
-from models.BuzzerModel import BuzzerModel
+from models import AlarmModel
 from models import TemperatureModel
 
 main = Blueprint('mqtt_blueprint', __name__)
@@ -42,7 +42,7 @@ def mqtt_subscriber():
             if topic == 'buzzer':
                 temp, status = scriptType.validate(request.json["status"])
                 if temp:
-                    BuzzerModel.post_buzzer(request.json["id"], status)
+                    AlarmModel.post_buzzer(request.json["id"], status)
                     return "Validate", 200  # Return "Validate" with a 200 OK status
                 else:
                     return message_error("Error")

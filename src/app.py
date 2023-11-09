@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from config import config
 
 # Routes
-from routes import BuzzerRoute
+from routes import AlarmRoute
 from routes import DoorRoute
 from routes import LightRoute
 from routes import TemperatureRoute
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     app.register_blueprint(MosquittoRoute.main, url_prefix='/mqtt')
     app.register_blueprint(TemperatureRoute.main, url_prefix='/temp')
-    app.register_blueprint(BuzzerRoute.main, url_prefix='/buzzer')
+    app.register_blueprint(AlarmRoute.main, url_prefix='/alarm')
     app.register_blueprint(DoorRoute.main, url_prefix='/door')
     app.register_blueprint(LightRoute.main, url_prefix='/light')
 
